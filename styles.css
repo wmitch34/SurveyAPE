@@ -1,0 +1,28 @@
+#pagecontent{
+    margin: auto;
+    width: 30%;
+    /* background-color: grey; */
+    /* border-radius: 7%; */
+}
+
+#registerPrompt{
+    display: none;
+}
+
+#loginContent{
+    margin: auto;
+    margin-top: 10%;
+    width: 50%;
+    
+}
+
+#registerContent{
+    margin: auto;
+    margin-top: 10%;
+    width: 50%;
+}
+
+.formField{
+    display: block;
+
+}

@@ -1,9 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>bruh</title>
+	<title>Survey Says...</title>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-	<h1>BRUH</h1>>
+    <div id = "pagecontent">
+	<h1 style="text-align: center;">Welcome to Survey site</h1>
+
+
+    <div id = "loginPrompt">
+        <div id = "loginContent">
+            <h2>Login</h2>
+            <label>Email</label>
+            <input class= "formField" type="text" id = "logEmail">
+            <label>Password</label>
+            <input class= "formField" type="text" id = "logPass">
+            <button onclick = "login()">Login</button>
+            <h2>No account?</h2><button onclick="showRegisterForm()">Register</button>
+
+        </div>
+        
+    </div>
+
+    
+
+    
+    <div id = "registerPrompt" >
+        <div id = "registerContent">
+            <h2>Register</h2>
+            <label>Email</label>
+            <input class= "formField" type="text" id = "regEmail">
+            <label>Password</label>
+            <input class= "formField"  type="text" id = "regPass">
+            <label>Confirm Password</label>
+            <input class= "formField"  type="text" id = "regPassConfirm">
+            <button onclick = "register()">Register</button>
+            <button onclick = "cancelRegister()">Cancel</button>
+        </div>
+        
+    </div>
+    </div>
 </body>
 </html>
