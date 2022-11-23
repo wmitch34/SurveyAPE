@@ -1,4 +1,5 @@
-
+// url
+let baseURL = "198.211.100.16"
 // userID for cookie
 let email = "";
 

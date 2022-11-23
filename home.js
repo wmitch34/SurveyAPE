@@ -1,11 +1,11 @@
 function showMySurveys(){
-    let retArr = httpGet(baseURL + "/php/get.php")
+    let retArr = httpGet(baseURL + "/php/getMySurveys.php")
 
     // show my surveys
 
 }
 function showIncompleteSurveys(){
-    let retArr = httpGet(theUrl)
+    let retArr = httpGet(baseURL + "/php/getIncompleteSurveys.php")
     // request incomplete surveys
     // show incomplete surveys
 
