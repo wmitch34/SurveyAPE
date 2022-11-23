@@ -1,30 +1,34 @@
+
+// userID for cookie
+let email = "";
+
 function login(){
-    let email = document.getElementbyID("logEmail");
-    let password = document.getElementbyID("logPass");
+    let email = document.getElementById("logEmail").value;
+    let password = document.getElementById("logPass").value;
     let loginObj = {
         email: email,
         password: password     
     }
-    let loginReq = sendLoginRequest(loginObj);
+    let loginReq //= sendLoginRequest(loginObj);
     if(loginReq === -1){
         // error message
     }else{
         // set cookie
-        // redirect to user page
+        window.location.href = "/home.html"
     }
 }
 
 function register(){
-    let email = document.getElementbyID("logEmail");
-    let password = document.getElementbyID("logPass");
-    let verifiedPassword = document.getElementbyID("regPassConfirm");
+    let email = document.getElementById("logEmail").value;
+    let password = document.getElementById("logPass").value;
+    let verifiedPassword = document.getElementById("regPassConfirm").value;
 
     if(pasword === verifiedPassword){
         let regObj = {
             email: email,
             password: password     
         }
-        let regReq = sendLoginRequest(regObj);
+        let regReq // = sendLoginRequest(regObj);
 
         if(loginReq === -1){
             // error message
