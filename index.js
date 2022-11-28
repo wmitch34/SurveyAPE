@@ -31,7 +31,7 @@ function register(){
             email: email,
             password: password     
         }
-        let regReq // = sendLoginRequest(regObj);
+        let regReq // = sendRegRequest(regObj);
 
         if(loginReq === -1){
             // error message
