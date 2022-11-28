@@ -1,3 +1,5 @@
+// JS for index page. includes cookie data
+
 // url
 let baseURL = "198.211.100.16"
 // userID for cookie

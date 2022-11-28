@@ -1,3 +1,4 @@
+// Font end js for Home page
 function showMySurveys(){
     let retArr = httpGet(baseURL + "/php/getMySurveys.php")
 
