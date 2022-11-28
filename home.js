@@ -17,6 +17,6 @@ function showCompleteSurveys(){
 
 }
 function logout(){
-    // clear cookie
+    // clear cookie goes here
     window.location.href = "/index.html"
 }
