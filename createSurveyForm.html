@@ -1,0 +1,48 @@
+<html>
+<head>
+<title>Create Survey Form</title>
+</head>
+<body>
+
+<form action="/home.html">
+<div align="center">
+<h1>Create Survey Form</h1>
+Enter Survey Title:
+<input type="text" name="UserName" size=35 maxlength=35 value="">
+</br></br>
+Emails to Invite to Survey:
+
+<textarea name="participants" cols=30 rows=1></textarea> </br> </br> <!-- a way to write a good amt of text w wrapping. wrap = "off" to take off wrapping-->
+Survey Question: <textarea name="Description" cols=30 rows=2></textarea> </br> </br>
+
+Description of Survey: 
+<textarea name="Description" cols=30 rows=4></textarea> </br> </br>
+
+Survey Type:
+<!-- radio buttons to choose btwn type 1 or 2 survey -->
+<input type="radio" name="exe" value=1>1 (Rate 1-5)
+<input type="radio" name="exe" value=2>2 (Written Response)
+</p>
+Select 1-5<p>
+<!--one way to choose btwn several values -->
+<input type="checkbox" name="Opt1">1
+<input type="checkbox" name="Opt2">2
+<input type="checkbox" name="Opt3">3
+<input type="checkbox" name="Opt4">4
+<input type="checkbox" name="Opt5">5
+</p>
+Or Select 1-5 Like this
+<!--another way to pick from several values-->
+<select name="answeringOption" ><option>    <!-- maybe they want to use this as a way to pick 1-5 -->
+<option value=1 selected = "true">1
+<option value=2 >2
+<option value=3 >3
+<option value=4 >4
+<option value=5 >5
+</select>
+</br></br>
+<input type="submit" value="Submit form">
+</div>
+</form>
+</body>
+</html>
