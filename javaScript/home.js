@@ -26,12 +26,33 @@ function showCreateForm(){
 
 }
 
+let question_box = "";
+let count = 0;
 function add_question(){
-    // send request,
-    // request everything be returned to update
+
+    document.getElementById("addq").innerHTML = "<div id = \"qtype\"><button onclick=\"newFreeResp()\">Free Response</button><button on click=\"newMultChoice()\">Multiple Choice</button></div>"
+    document.getElementById("addq").style = "display: block;"
+}
+function newFreeResp(){
+    question_box += "<div id = \" question" + count + "\"><label>Question(User response is free response)</label><input type = \"text area\"></input></div>"
+    count++;
+    document.getElementById("question_box").innerHTML = question_box;
+    document.getElementById("addq").style = "display: none;"
+}
+function newMultChoice(){
+    question_box += "<div id = \" question" + count + "\"><label>Question(User response is value 1 -5)</label><input type = \"text area\"></input></div>"
+    count++;
+    document.getElementById("question_box").innerHTML = question_box;
+    document.getElementById("addq").style = "display: none;"
+
 }
 
 function cancel_add_survey(){
     document.getElementById("createSurveyForm").style = "display: none;"
 
+}
+
+function create(){
+    // send request,
+    // request everything be returned to update
 }
