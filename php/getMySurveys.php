@@ -1,7 +1,8 @@
-<!-- return array of surveys that curr user has created -->
-<?php
-	$exist = True;
 
+<?php
+
+	//<!-- return array of surveys that curr user has created -->
+	$exist = True;
 	$inData = getRequestInfo();
     	$Email = $inData["Email"];
 	//$CheckUser = "SELECT * from Users WHERE Email = '$Email'";
