@@ -5,7 +5,7 @@
 	$inData = getRequestInfo();
     	$Email = $inData["Email"];
 	//$CheckUser = "SELECT * from Users WHERE Email = '$Email'";
-	$conn = new mysqli("localhost", "root@localhost", "Group18Aa", "Group18");	//*****
+	$conn = new mysqli("localhost", "will", "dbscrub", "Group18");		//*****
 	if ($conn->connect_error)
 	{
 		returnWithError( $conn->connect_error );
