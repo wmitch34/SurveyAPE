@@ -17,7 +17,7 @@ function login(){
         // error message
     }else{
         // set cookie
-        window.location.href = "./html/home.html"
+        window.location.href = "./Html/home.html"
     }
 }
 
