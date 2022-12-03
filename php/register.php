@@ -6,12 +6,6 @@
 	$Email = $inData["email"];
 	$Password = $inData["password"];
 
-	//$config = parse_ini_file('config.ini');
-    # server, user, pass, database
-
-    //$conn = mysqli($config['hostname'], $config['username'], $config['password'], $config['database']);
-
-
     $conn = new mysqli("localhost", "will", "dbscrub", "Group18");	
 
 	if ($conn->connect_error)
@@ -20,32 +14,29 @@
 	}
 	else
 	{
-		// $CheckQuery = mysqli_query($conn,$CheckUser);
-		// if(mysqli_num_rows($CheckQuery)>0){
-		// 	returnWithError( "Username taken");
-		// }else{
+		$stmt1 = $conn->prepare("SELECT * FROM users WHERE `email` = ?");
+		$stmt1->bind_param("s", $Email);
+		$stmt1->execute();
+		$result = $stmt1->get_result();
+		
+		if($row = $result->fetch_assoc()){
+			
+			$stmt1->close();
+			$conn->close();
+			
+			returnWithError( "Username taken");
+		}else{
 
 			$stmt = $conn->prepare("INSERT into users (`email`, `password`) VALUES(?,?)");
 			$stmt->bind_param("ss", $Email, $Password);
 			$stmt->execute();
-			// $stmt2 = $conn->prepare("SELECT Email FROM users WHERE Email='$Email'");
-			// $stmt2->execute();
-			// $result = $stmt2->get_result();
-			// if( $row = $result->fetch_assoc())
-			// {
-			// 	returnWithInfo( $row['email']);
-			// }
-			// else
-			// {
-			// 	returnWithError("Unexpected error");
-			// }
-
+		
 			$stmt->close();
-			//$stmt2->close();
+			$stmt1->close();
 			$conn->close();
 			
 			returnWithError("");
-    	//}
+    	}
 	}
 
 	function getRequestInfo()
