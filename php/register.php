@@ -50,12 +50,6 @@
 		echo $obj;
 	}
 
-	function returnWithInfo($result)
-	{
-		$retValue = '{"ID":' . $result . '}';
-		sendResultInfoAsJson($retValue);
-	}
-
 	function returnWithError( $err )
 	{
 		$retValue = '{"error":"' . $err . '"}';
