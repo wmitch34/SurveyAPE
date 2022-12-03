@@ -19,7 +19,7 @@
 
 		if($row = $result->fetch_assoc()) //$Row is not empty
 		{
-			returnWithInfo($row['email'], $row['password']);
+			returnWithInfo($row['email']);
 		}
 		else //$Row is empty
 		{ 
@@ -40,12 +40,12 @@
 	}
 	
 	function returnWithError($err){
-		$retValue = '{"email":"","password":"","error":"' . $err . '"}';
+		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
-	function returnWithInfo($email, $password){
-		$retValue = '{"email":' . $email . ',"password":"' . $password . '"}';
+	function returnWithInfo($email){
+		$retValue = '{"email":' . $email . '"}';
 		sendResultInfoAsJson($retValue);
 	}
 	
