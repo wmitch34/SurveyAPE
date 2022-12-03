@@ -3,11 +3,27 @@
 <html>
 <head>
 	<title>Home</title>
-    <script src="home.js"></script>
-    <link rel="stylesheet" href="home.css">
+    <script src="../javaScript/home.js"></script>
+    <link rel="stylesheet" href="../css/home.css">
 </head>
 <body>
-    <span><h1 style="display: inline;">Home</h1><Button id="logout" onclick ="logout()" style="display: inline;">Logout</Button></span>
+    <span><h1 style="display: inline;">Home</h1>
+        <Button id="createSurvey" onclick ="showCreateForm()" style="display: inline;">CreateSurvey</Button>
+        <Button id="logout" onclick ="logout()" style="display: inline;">Logout</Button>
+    </span>
+    <div id ="createSurveyForm">
+        <label>Title</label>
+        <input class= "formField" type="text" id = "create_title">
+        <br>
+        <label>Description</label>
+        <input class= "formField" type="textarea" id = "create_desc">
+        <br>
+        <button id="add_question" onclick="add_question()">Add Question</button>
+        <br>
+        <button id="create" onclick="create()">Create Survey</button>
+        <button id="cancel_add_survey" onclick="cancel_add_survey()">Cancel</button>
+
+    </div>
     <div id = "createdSurveys">
         <h2>Created Surveys:</h2>
         <div id = "createdSurveyDisplayBox"></div>

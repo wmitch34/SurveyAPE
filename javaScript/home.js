@@ -20,3 +20,18 @@ function logout(){
     // clear cookie goes here
     window.location.href = "/index.html"
 }
+
+function showCreateForm(){
+    document.getElementById("createSurveyForm").style = "display: block;"
+
+}
+
+function add_question(){
+    // send request,
+    // request everything be returned to update
+}
+
+function cancel_add_survey(){
+    document.getElementById("createSurveyForm").style = "display: none;"
+
+}
