@@ -7,7 +7,7 @@
 	$email = "";
 	$password = "";
 	#$conn = new mysqli("localhost", "username", "password", "database");
-	$conn = new mysqli("localhost", "root@localhost", "Group18Aa", "Group18"); 	
+	$conn = new mysqli("localhost", "will", "dbscrub", "Group18");	
 	if($conn->connect_error){
 		returnWithError($conn->connect_error);
 	}
