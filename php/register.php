@@ -3,7 +3,7 @@
 	$exist = True;
 
 	$inData = getRequestInfo();
-	$Email = $indDatata["Email"];
+	$Email = $inData["Email"];
 	$Password = $inData["Password"];
 	$CheckUser = "SELECT * from Users WHERE Email = '$Email'";
 
