@@ -1,4 +1,4 @@
-<!-- add a user to db if it does not already exist. Return negative message for failure, positive mesage for success -->
+<!-- brother -->
 <?php
 	$exist = True;
 
