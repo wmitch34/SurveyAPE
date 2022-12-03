@@ -24,7 +24,7 @@
 			$stmt1->close();
 			$conn->close();
 			
-			returnWithError( "Username taken");
+			returnWithError( "Account Already Exists With this email.");
 		}else{
 
 			$stmt = $conn->prepare("INSERT into users (`email`, `password`) VALUES(?,?)");
