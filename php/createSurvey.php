@@ -2,12 +2,13 @@
 
 <?php
 	$inData = getRequestInfo();
-	echo $inData["title"];
 	$title = $inData["title"];						//title of survey
 	$desc = $inData["desc"]; 						//survey desc
 	$ownerEmail = $inData["ownerEmail"];			//owners email
-	#$paEmails = $inData["pEmails"];							//array of JSON objects consisting of participant emails
-	#$question = $inData["question"];							//array of JSON objects consisting of string & type
+	$pEmail = "";									//array of JSON objects consisting of participant emails
+	$question = "";									//array of JSON objects consisting of string & type
+	$type = -1;
+	$surveyID = -1;
 	$conn = new mysqli("localhost", "will", "dbscrub", "Group18");	
 	if ($conn->connect_error) 
 	{
@@ -18,13 +19,22 @@
         $stmt = $conn->prepare("INSERT into surveys (`surveyID`, `title`, `description`, `email`) VALUES(NULL,?,?,?)");
         $stmt->bind_param("sss", $title, $desc, $ownerEmail);
 		
+		#insert id returning 0??
 		$stmt1 = $conn->query("SELECT LAST_INSERT_ID()");
+		$surveyID = $conn->insert_id;
+		echo $surveyID;
+		foreach($inData["participants"] as $x)
+			$pEmail = $x["participantEmail"];
+			foreach($inData["questionArray"] as $y){
+				$type = $y["type"];
+				$pEmail = $y[""];
+				$question = $y["question"];
+				$stmt2 = $conn->prepare("INSERT into questions (`surveyID`,`pEmails`,`question, `answer`, `type`) VALUES(NULL,?,?,?,?,?)");
+				$stmt2->bind_param("isss",$surveyID, $pEmail, $question, $answer, $type);  //if s's are string then i could be int and it could be sssi
+				$stmt2->execute();
+				$stmt2->close();
+			}
 		
-
-		$stmt1 = $conn->prepare("INSERT into questions (`surveyID`,`pEmails`,`question, `answer`, `type`) VALUES(NULL,?,?,?,?,?)");
-        $stmt1->bind_param("isss",$surveyID, $pEmails, $question, $answer, $type);  //if s's are string then i could be int and it could be sssi
-		$stmt->execute();
-		$stmt->close();
 		$conn->close();
 		returnWithError("");
 	}
