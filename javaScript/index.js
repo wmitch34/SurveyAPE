@@ -3,12 +3,8 @@
 // url
 var baseURL = "198.211.100.16"
 // userID for cookie
-var email_cookie = "";
+document.cookie = "";
 var ret;
-
-function getcookie(){
-    return email_cookie;
-}
 
 
 function register(){
@@ -81,24 +77,26 @@ function login(){
     let xhr = new XMLHttpRequest();
     xhr.open("POST", theUrl, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    console.log("brother")
+    
     try {
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                console.log("Hello world")
-                let jsonObject = JSON.parse(xhr.responseText);
-                userId = jsonObject.email;
-                console.log(userId)
 
-                email_cookie = userId;
-                console.log(getcookie())
+                if(xhr.responseText == "{\"error\":\"No Records Found\"}"){
+                    console.log("Error")
+                    login_error("Please enter a valid email and password")
+                    return
+                }else{
 
-                //window.location.href = "/html/home.html";
+                    document.cookie = xhr.responseText
+                    window.location.href = "../Html/home.html";
+                    console.log(document.cookie)
+                }
             }
         };
-        xhr.send(loginObj);
+        xhr.send(JSON.stringify(loginObj));
     } catch (err) {
-        //document.getElementById("loginResult").innerHTML = err.message;
+        console.log("servererror")
     }
 }
 

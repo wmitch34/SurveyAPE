@@ -1,55 +1,35 @@
-
 <?php
-
 	//<!-- return array of surveys that curr user has created -->
-	$exist = True;
 	$inData = getRequestInfo();
-    	$Email = $inData["Email"];
-	//$CheckUser = "SELECT * from Users WHERE Email = '$Email'";
-	$conn = new mysqli("localhost", "will", "dbscrub", "Group18");		//*****
-	if ($conn->connect_error)
-	{
-		returnWithError( $conn->connect_error );
+	$ownerEmail = $inData["ownerEmail"];	//email of person logged in
+	//$ownerEmail = "test@gmail.com";
+	$conn = new mysqli("localhost", "will", "dbscrub", "Group18");
+	if($conn->connect_error){
+		returnWithError($conn->connect_error);
 	}
-	else
-	{
-		$CheckQuery = mysqli_query($conn,$CheckUser);
-		$stmt = $conn->prepare("SELECT title FROM surveys WHERE Email='$Email'");
-		$stmt->execute();
-		$result = $stmt->get_result();
-		if( $row = $result->fetch_assoc())
-		{
-			returnWithInfo( $row['email']);
-		}
-		else
-		{
-			returnWithError("Unexpected error");
-		}
-		$stmt->close();
+	else{
+		//echo"three";
+		$result = $conn->query("SELECT * FROM surveys WHERE email = $ownerEmail ");
+		//$result = $conn->query("SELECT * FROM surveys WHERE `email` = $ownerEmail");
+		//$result->bind_param("s", $ownerEmail);
+		//echo "four";
+        $rows = array();
+		//echo "five";
+		//$result->execute();
+		//$final = $result->get_result();
+		while($row = $result->fetch_assoc()){
+            $rows[] = $row;
+        }
+
+        echo json_encode($rows);
 		$conn->close();
-   }
 
-	function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
 	}
 
-	function sendResultInfoAsJson( $obj )
+	function returnWithInfo( $ownerEmail, $final)
 	{
-		header('Content-type: application/json');
-		echo $obj;
-	}
-
-	function returnWithInfo($result)
-	{
-		$retValue = '{"ID":' . $result . '}';
-		sendResultInfoAsJson($retValue);
-	}
-
-	function returnWithError( $err )
-	{
-		$retValue = '{"error":"' . $err . '"}';
+		$retValue = '{"User":[' . $searchResults . '],"Owns Surveys":['. $final . '], "error":""}';
+		//$retValue = '{"results":[' . $searchResults . '], "error":""}';
 		sendResultInfoAsJson( $retValue );
 	}
-
 ?>
