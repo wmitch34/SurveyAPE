@@ -5,10 +5,10 @@
 	$title = $inData["title"];						//title of survey
 	$desc = $inData["desc"]; 						//survey desc
 	$ownerEmail = $inData["ownerEmail"];			//owners email
-	$pEmail = "";									//array of JSON objects consisting of participant emails
-	$question = "";									//array of JSON objects consisting of string & type
-	$type = -1;
-	$surveyID = -1;
+	$pEmail = "";
+	$question = "";
+	$type = PHP_INT_MAX;
+	$surveyID = PHP_INT_MAX;
 	$conn = new mysqli("localhost", "will", "dbscrub", "Group18");	
 	if ($conn->connect_error) 
 	{
@@ -18,30 +18,30 @@
 	{
         $stmt = $conn->prepare("INSERT into surveys (`surveyID`, `title`, `description`, `email`) VALUES(NULL,?,?,?)");
         $stmt->bind_param("sss", $title, $desc, $ownerEmail);
-		
-		#insert id returning 0??
-		$stmt1 = $conn->query("SELECT LAST_INSERT_ID()");
+		$stmt->execute();
+		$stmt->close();
 		$surveyID = $conn->insert_id;
-		echo $surveyID;
+		echo $surveyID . " ";
 		foreach($inData["participants"] as $x)
-			$pEmail = $x["participantEmail"];
 			foreach($inData["questionArray"] as $y){
 				$type = $y["type"];
-				$pEmail = $y[""];
+				echo $type . " ";
 				$question = $y["question"];
-				$stmt2 = $conn->prepare("INSERT into questions (`surveyID`,`pEmails`,`question, `answer`, `type`) VALUES(NULL,?,?,?,?,?)");
-				$stmt2->bind_param("isss",$surveyID, $pEmail, $question, $answer, $type);  //if s's are string then i could be int and it could be sssi
-				$stmt2->execute();
-				$stmt2->close();
+				echo $question . " ";
+				$pEmail = $x["participantEmail"];
+				echo $pEmail . " ";
+				$stmt1 = $conn->prepare("INSERT into questions (`id`,`surveyID`,`participantEmail`,`question`, `answer`, `type`) VALUES(NULL,?,?,?,NULL,?)");
+				echo 444444;
+				$stmt1->bind_param("issi",$surveyID, $pEmail, $question, $type);
+				$stmt1->execute();
+				$stmt1->close();
 			}
-		
 		$conn->close();
 		returnWithError("");
 	}
 
 	function getRequestInfo()
 	{
-		//return json_decode(file_get_contents('php://input'), true);
 		return json_decode(file_get_contents('php://input'), true);
 	}
 
