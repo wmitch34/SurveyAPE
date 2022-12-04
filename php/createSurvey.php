@@ -31,7 +31,6 @@
 				$pEmail = $x["participantEmail"];
 				echo $pEmail . " ";
 				$stmt1 = $conn->prepare("INSERT into questions (`id`,`surveyID`,`participantEmail`,`question`, `answer`, `type`) VALUES(NULL,?,?,?,NULL,?)");
-				echo 444444;
 				$stmt1->bind_param("issi",$surveyID, $pEmail, $question, $type);
 				$stmt1->execute();
 				$stmt1->close();
