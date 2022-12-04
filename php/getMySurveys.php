@@ -1,11 +1,12 @@
-<!-- return array of surveys that curr user has created -->
-<?php
-	$exist = True;
 
+<?php
+
+	//<!-- return array of surveys that curr user has created -->
+	$exist = True;
 	$inData = getRequestInfo();
-    $Email = $indDatata["Email"];
+    	$Email = $inData["Email"];
 	//$CheckUser = "SELECT * from Users WHERE Email = '$Email'";
-	$conn = new mysqli("localhost", "root@localhost", "Group18Aa", "Group18");	//*****
+	$conn = new mysqli("localhost", "will", "dbscrub", "Group18");		//*****
 	if ($conn->connect_error)
 	{
 		returnWithError( $conn->connect_error );
