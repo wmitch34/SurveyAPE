@@ -1,8 +1,28 @@
 // Font end js for Home page
 function showMySurveys(){
-    // let retArr = httpGet(baseURL + "/php/getMySurveys.php")
 
-    // show my surveys
+    let temp = document.cookie.toString();
+    temp = temp.slice(1, -1);
+    
+    let theUrl = "/php/getMySurveys.php"
+    let xhr = new XMLHttpRequest();
+
+    xhr.open( "POST", theUrl, true ); // false for synchronous request
+
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        try {
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let res = xhr.responseText
+                    console.log("Return from server: " + res)
+                }else{
+                    console.log("server error")
+                }
+            };
+            xhr.send(payLoad);
+        } catch (err) {
+            //whoops?
+        }
 
 }
 function showIncompleteSurveys(){
@@ -17,29 +37,30 @@ function showCompleteSurveys(){
 
 }
 function logout(){
-    email_cookie = '';
+    document.cookie = '';
     window.location.href = "/index.html"
 }
 
 function showCreateForm(){
     document.getElementById("createSurveyForm").style = "display: block;"
-    showEmailList();
+    showEmailList();email
 
 }
 
 var ret;
 
 function showEmailList(){
+
+    console.log(document.cookie)
     let theUrl = "/php/getUsers.php"
     let xhr = new XMLHttpRequest();
     let display_html = "";
 
-    // console.log("generating email list")
+    console.log("generating email list")
 
     try {
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                console.log("made it into on ready state chan")
                 ret = xhr.responseText;
 
                 console.log(ret)

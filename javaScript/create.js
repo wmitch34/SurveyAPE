@@ -1,11 +1,14 @@
 function create(){
     let title = document.getElementById("create_title").value 
     let desc = document.getElementById("create_desc").value
+    let temp = document.cookie.toString();
+    temp = temp.slice(1, -1);
+    console.log(temp)
 
     let survey_obj = {
         title: title,
         desc: desc,
-        ownerEmail: getcookie()
+        ownerEmail: temp
     }
 
     // send survey table obj
@@ -23,14 +26,12 @@ function create(){
         JSON.stringify(question);
         stringArr.push(question);
     }
-    // console.log(stringArr)
 
     let participants = getCheckedBoxes("participantCheckBoxes")
     let indexArr = [];
     for(let i = 0; i < participants.length; i++){
         let id_string = (participants[i].id) + ""
         let index = id_string.slice(-1)
-        console.log("index is "+ index)
         indexArr.push(index);
     }
     let emailArr = [];
@@ -42,16 +43,18 @@ function create(){
         emailArr.push(email_obj);
     }
 
-    // send array of questions formatted as json
-    let sendString = []
-    sendString[0] = survey_obj;
-    sendString[1] = stringArr;
-    sendString[2] = emailArr
+    let payLoad = {
+        "title":survey_obj.title,
+        "desc":survey_obj.desc,
+        "ownerEmail":survey_obj.ownerEmail,
+        "questionArray":stringArr,
+        "participants":emailArr
+    }
     
 
-    let payLoad = JSON.stringify(sendString)
+    payLoad = JSON.stringify(payLoad)
 
-    console.log(payload)
+    console.log("JSON payload is : " + payLoad)
 
     let theUrl = "/php/createSurvey.php"
     let xhr = new XMLHttpRequest();
@@ -68,7 +71,7 @@ function create(){
                     console.log("server error")
                 }
             };
-            xhr.send(payload);
+            xhr.send(payLoad);
         } catch (err) {
             //whoops?
         }
