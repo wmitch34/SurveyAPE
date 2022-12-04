@@ -26,21 +26,27 @@ function showCreateForm(){
 
 }
 
-let question_box = "";
-let count = 0;
+var question_box = "";
+var count = 0;
+var type_arr =[]
+
 function add_question(){
 
-    document.getElementById("addq").innerHTML = "<div id = \"qtype\"><button onclick=\"newFreeResp()\">Free Response</button><button on click=\"newMultChoice()\">Multiple Choice</button></div>"
+    document.getElementById("addq").innerHTML = "<div id = \"qtype\"><button onclick=\"newFreeResp()\">Free Response</button><button onclick=\"newMultChoice()\">Multiple Choice</button></div>"
     document.getElementById("addq").style = "display: block;"
 }
 function newFreeResp(){
-    question_box += "<div id = \" question" + count + "\"><label>Question(User response is free response)</label><input type = \"text area\"></input></div>"
+    question_box += "<div id = \"question" + count + "\"><label>Question(User response is free response)</label><input type = \"textarea\" id = \"question_num_" + count+"\"></input></div>"
+    type_arr[count] = 1;
     count++;
     document.getElementById("question_box").innerHTML = question_box;
     document.getElementById("addq").style = "display: none;"
+    
 }
 function newMultChoice(){
-    question_box += "<div id = \" question" + count + "\"><label>Question(User response is value 1 -5)</label><input type = \"text area\"></input></div>"
+    console.log("made it")
+    question_box += "<div id = \"question" + count + "\"><label>Question(User response Multiple choice 1 - 5)</label><input type = \"textarea\" id = \"question_num_" + count+"\"></input></div>"
+    type_arr[count] = 0;
     count++;
     document.getElementById("question_box").innerHTML = question_box;
     document.getElementById("addq").style = "display: none;"
@@ -50,9 +56,4 @@ function newMultChoice(){
 function cancel_add_survey(){
     document.getElementById("createSurveyForm").style = "display: none;"
 
-}
-
-function create(){
-    // send request,
-    // request everything be returned to update
 }

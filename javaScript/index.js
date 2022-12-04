@@ -1,9 +1,13 @@
 // JS for index page. includes cookie data
 
 // url
-let baseURL = "198.211.100.16"
+var baseURL = "198.211.100.16"
 // userID for cookie
-let email = "";
+var email_cookie = "";
+
+function getcookie(){
+    return email_cookie;
+}
 
 function register(){
     let email = document.getElementById("regEmail").value;
@@ -74,6 +78,33 @@ function login(){
         // set cookie
         window.location.href = "./Html/home.html"
     }
+}
+
+function httpLogin(){
+    let email = input.email;
+    let password = input.password;
+
+    let data = JSON.stringify({ "email": email, "password": password });
+
+    
+    let theUrl = "/php/login.php"
+    let xhr = new XMLHttpRequest();
+
+    xhr.open( "POST", theUrl, true ); // false for synchronous request
+
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        try {
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let res = xhr.responseText
+                    console.log(res)
+                    
+                }
+            };
+            xhr.send(data);
+        } catch (err) {
+            //whoops?
+        }
 }
 
 
