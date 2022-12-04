@@ -1,5 +1,3 @@
-<!-- call checks login input info against db. if it is in there, return some positive message. if not, return negative message -->
-
 <?php
 
 	$inData = getRequestInfo();
@@ -19,7 +17,7 @@
 
 		if($row = $result->fetch_assoc()) //$Row is not empty
 		{
-			returnWithInfo($row['email']);
+			echo json_encode($row['email']);
 		}
 		else //$Row is empty
 		{ 
@@ -45,7 +43,7 @@
 	}
 	
 	function returnWithInfo($email){
-		$retValue = '{"email":' . $email . '"}';
+		$retValue = '{"email":"' . $email . '"}';
 		sendResultInfoAsJson($retValue);
 	}
 	
