@@ -1,55 +1,23 @@
-
-<?php
-
-	//<!-- return array of surveys that curr user has created -->
-	$exist = True;
-	$inData = getRequestInfo();
-    	$Email = $inData["Email"];
-	//$CheckUser = "SELECT * from Users WHERE Email = '$Email'";
-	$conn = new mysqli("localhost", "will", "dbscrub", "Group18");		//*****
-	if ($conn->connect_error)
-	{
-		returnWithError( $conn->connect_error );
+<?php	//return array of surveys that curr user has created
+	$inData = json_decode(file_get_contents('php://input'), true);
+	$email = $inData["email"];	//email of person logged in
+	$conn = new mysqli("localhost", "will", "dbscrub", "Group18");
+	if($conn->connect_error){
+		returnWithError($conn->connect_error);
 	}
-	else
-	{
-		$CheckQuery = mysqli_query($conn,$CheckUser);
-		$stmt = $conn->prepare("SELECT title FROM surveys WHERE Email='$Email'");
+	else{
+		//$stmt = $conn->prepare("SELECT `title`, `description`, `type`  FROM surveys, questions WHERE surveys.email = ? AND surveys.surveyID = questions.surveyID");
+		$stmt = $conn->prepare("SELECT `title`, `description`, `surveyID`  FROM surveys WHERE surveys.email = ?");
+		$stmt->bind_param("s", $email);
 		$stmt->execute();
 		$result = $stmt->get_result();
-		if( $row = $result->fetch_assoc())
-		{
-			returnWithInfo( $row['email']);
-		}
-		else
-		{
-			returnWithError("Unexpected error");
-		}
+        $rows = array();
+		while($row = mysqli_fetch_assoc($result)){
+            $rows[] = $row;
+        }
+
+        echo json_encode($rows);
 		$stmt->close();
 		$conn->close();
-   }
-
-	function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
 	}
-
-	function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
-	}
-
-	function returnWithInfo($result)
-	{
-		$retValue = '{"ID":' . $result . '}';
-		sendResultInfoAsJson($retValue);
-	}
-
-	function returnWithError( $err )
-	{
-		$retValue = '{"error":"' . $err . '"}';
-		sendResultInfoAsJson( $retValue );
-	}
-
 ?>
