@@ -45,68 +45,61 @@ function httpRegister(input){
     xhr.open( "POST", theUrl, true ); // false for synchronous request
 
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-        try {
-            xhr.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    let res = xhr.responseText
-                    console.log(res)
-                    cancelRegister()
-                    displaySuccessMessage();
-                }else{
-                    reg_error("This email is in use.")
-                }
-            };
-            xhr.send(data);
-        } catch (err) {
-            //whoops?
-        }
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let res = xhr.responseText
+                console.log(res)
+                cancelRegister()
+                displaySuccessMessage();
+            }else{
+                reg_error("This email is in use.")
+            }
+        };
+        xhr.send(data);
+    } catch (err) {
+        console.log("reg error")
+    }
 }
 
 function login(){
     let email = document.getElementById("logEmail").value;
     let password = document.getElementById("logPass").value;
+
     if(email == "" || password == ""){
         login_error("Please enter a valid email and password")
         return;
     }
+
     let loginObj = {
         email: email,
         password: password     
     }
-    let loginReq //= sendLoginRequest(loginObj);
-    if(loginReq === -1){
-        // error message
-    }else{
-        // set cookie
-        window.location.href = "./Html/home.html"
-    }
-}
+    console.log(loginObj)
 
-function httpLogin(){
-    let email = input.email;
-    let password = input.password;
-
-    let data = JSON.stringify({ "email": email, "password": password });
-
-    
     let theUrl = "/php/login.php"
     let xhr = new XMLHttpRequest();
-
-    xhr.open( "POST", theUrl, true ); // false for synchronous request
-
+    xhr.open("POST", theUrl, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-        try {
-            xhr.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    let res = xhr.responseText
-                    console.log(res)
-                    
-                }
-            };
-            xhr.send(data);
-        } catch (err) {
-            //whoops?
-        }
+    console.log("brother")
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log("Hello world")
+                let jsonObject = JSON.parse(xhr.responseText);
+                userId = jsonObject.email;
+                console.log(userId)
+
+                email_cookie = userId;
+                console.log(getcookie())
+
+                //window.location.href = "/html/home.html";
+            }
+        };
+        xhr.send(loginObj);
+    } catch (err) {
+        //document.getElementById("loginResult").innerHTML = err.message;
+    }
 }
 
 

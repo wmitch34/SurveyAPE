@@ -37,7 +37,7 @@ function create(){
     for(let i = 0; i < participants.length; i++){
         let my_email = document.getElementById("emailListLabel"+indexArr[i]).innerHTML
         let email_obj = {
-            email:my_email
+            participantEmail:my_email
         }
         emailArr.push(email_obj);
     }
@@ -47,7 +47,31 @@ function create(){
     sendString[0] = survey_obj;
     sendString[1] = stringArr;
     sendString[2] = emailArr
-    console.log(JSON.stringify(sendString))
+    
+
+    let payLoad = JSON.stringify(sendString)
+
+    console.log(payload)
+
+    let theUrl = "/php/createSurvey.php"
+    let xhr = new XMLHttpRequest();
+
+    xhr.open( "POST", theUrl, true ); // false for synchronous request
+
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        try {
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let res = xhr.responseText
+                    console.log("Res return from server: " + res)
+                }else{
+                    console.log("server error")
+                }
+            };
+            xhr.send(payload);
+        } catch (err) {
+            //whoops?
+        }
 
 }
 
