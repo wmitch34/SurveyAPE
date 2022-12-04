@@ -4,10 +4,12 @@
 var baseURL = "198.211.100.16"
 // userID for cookie
 var email_cookie = "";
+var ret;
 
 function getcookie(){
     return email_cookie;
 }
+
 
 function register(){
     let email = document.getElementById("regEmail").value;

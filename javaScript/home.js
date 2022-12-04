@@ -27,16 +27,46 @@ function showCreateForm(){
 
 }
 
+var ret;
+
 function showEmailList(){
     let theUrl = "/php/getUsers.php"
     let xhr = new XMLHttpRequest();
+    let display_html = "";
 
-    console.log("generating email list")
+    // console.log("generating email list")
 
-    xhr.open( "GET", theUrl, false ); // false for synchronous request
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log("made it into on ready state chan")
+                ret = xhr.responseText;
+
+                console.log(ret)
+                ret = JSON.parse(ret);
+                console.log(ret)
+                let length = ret.length;
+            
+                for(let i = 0; i < length; i++){
+                    display_html += "<input id = \" emailList "+i+"\" type=\"checkbox\" name = \"participantCheckBoxes\"><label id = \"emailListLabel"+i+"\">" + ret[i].email + "</label><br>"
+
+                }
+                document.getElementById("email_display_box").innerHTML = display_html   
+
+            }
+    
+        }
+    }catch(err){
+
+    }
+
+
+    xhr.open( "GET", theUrl, true ); // false for synchronous request
     xhr.send(null)
-    let ret = xhr.responseText;
-    console.log(ret)
+
+    return ret;
+   
+
 }
 
 var question_box = "";

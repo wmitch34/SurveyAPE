@@ -25,10 +25,43 @@ function create(){
     }
     // console.log(stringArr)
 
+    let participants = getCheckedBoxes("participantCheckBoxes")
+    let indexArr = [];
+    for(let i = 0; i < participants.length; i++){
+        let id_string = (participants[i].id) + ""
+        let index = id_string.slice(-1)
+        console.log("index is "+ index)
+        indexArr.push(index);
+    }
+    let emailArr = [];
+    for(let i = 0; i < participants.length; i++){
+        let my_email = document.getElementById("emailListLabel"+indexArr[i]).innerHTML
+        let email_obj = {
+            email:my_email
+        }
+        emailArr.push(email_obj);
+    }
+
     // send array of questions formatted as json
     let sendString = []
     sendString[0] = survey_obj;
     sendString[1] = stringArr;
-    console.log(sendString)
+    sendString[2] = emailArr
+    console.log(JSON.stringify(sendString))
 
 }
+
+function getCheckedBoxes(chkboxName) {
+    var checkboxes = document.getElementsByName(chkboxName);
+    var checkboxesChecked = [];
+    // loop over them all
+    for (var i=0; i<checkboxes.length; i++) {
+       // And stick the checked ones onto an array...
+       if (checkboxes[i].checked) {
+          checkboxesChecked.push(checkboxes[i]);
+       }
+    }
+    // Return the array if it is non-empty, or null
+    return checkboxesChecked.length > 0 ? checkboxesChecked : null;
+  }
+  
