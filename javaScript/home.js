@@ -1,5 +1,9 @@
 // Font end js for Home page
 function showMySurveys(){
+
+    let temp = document.cookie.toString();
+    temp = temp.slice(1, -1);
+    
     let theUrl = "/php/getMySurveys.php"
     let xhr = new XMLHttpRequest();
 
