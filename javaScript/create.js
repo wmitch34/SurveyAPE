@@ -76,6 +76,8 @@ function create(){
             //whoops?
         }
 
+        document.getElementById("createSurveyForm").style = "display: none;"
+
 }
 
 function getCheckedBoxes(chkboxName) {
