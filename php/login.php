@@ -45,7 +45,7 @@
 	}
 	
 	function returnWithInfo($email){
-		$retValue = '{"email":' . $email . '"}';
+		$retValue = '{"email":"' . $email . '"}';
 		sendResultInfoAsJson($retValue);
 	}
 	
