@@ -1,41 +1,47 @@
 // Font end js for Home page
 function showMySurveys(){
+    console.log("loading surveys")
 
     let temp = document.cookie.toString();
     temp = temp.slice(1, -1);
-    
+    let payLoad = {
+        email:temp
+    }
+
     let theUrl = "/php/getMySurveys.php"
     let xhr = new XMLHttpRequest();
 
     xhr.open( "POST", theUrl, true ); // false for synchronous request
-
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-        try {
-            xhr.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    let res = xhr.responseText
-                    console.log("Return from server: " + res)
-                }else{
-                    console.log("server error")
-                }
-            };
-            xhr.send(payLoad);
-        } catch (err) {
-            //whoops?
-        }
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let res = xhr.responseText
+                console.log("Return from server: " + res)
+                display_my_surveys(JSON.parse(res))
+            }else{
+                console.log("server error")
+            }
+        };
+        xhr.send(JSON.stringify(payLoad))
+    } catch (err) {
+        //whoops?
+    }
+}
+
+function display_my_surveys(input){
+    console.log(input)
+    let display = "";
+    for(let i = 0; i < input.length;i++){
+        display+= "<span>Title: \"" +input[i].title + "\" Description: \"" + input[i].description + "\" <button onclick=\"showquestions(" + input[i].surveyID +")\">Show Responses</button></span><br>"
+    }
+    document.getElementById("my_survey_display_box").innerHTML = display;
 
 }
-function showIncompleteSurveys(){
-    // let retArr = httpGet(baseURL + "/php/getIncompleteSurveys.php")
-    // request incomplete surveys
-    // show incomplete surveys
 
-}
-function showCompleteSurveys(){
-    // let retArr = httpGet(theUrl)
-    // request complete surveys
 
-}
+
+
 function logout(){
     document.cookie = '';
     window.location.href = "/index.html"
@@ -43,7 +49,7 @@ function logout(){
 
 function showCreateForm(){
     document.getElementById("createSurveyForm").style = "display: block;"
-    showEmailList();email
+    showEmailList();
 
 }
 
@@ -118,6 +124,7 @@ function newMultChoice(){
 }
 
 function cancel_add_survey(){
+
     document.getElementById("createSurveyForm").style = "display: none;"
 
 }
