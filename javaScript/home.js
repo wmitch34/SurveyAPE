@@ -26,9 +26,7 @@ function showMySurveys(){
     }
 }
 
-function display_my_surveys(input){
-    
-    
+function display_my_surveys(input){    
     let display = "";
     for(let i = 0; i < input.length;i++){
 
@@ -37,16 +35,12 @@ function display_my_surveys(input){
 
         let desc = input[i].description + ""
         desc = desc.replace('\'', '')
-     
-        //display += "<button onclick=\"showResponses(" + input[i].surveyID + ", '" + title + "', '" +desc+"')\">Show Responses</button>"
+
         display+= "<span>Title: " +title + " Description: " + desc + "<button onclick=\"showResponses(" + input[i].surveyID + ", '" + title + "', '" +desc+"')\">Show Responses</button></span><br>"
     }
     document.getElementById("my_survey_display_box").innerHTML = display;
 
 }
-
-
-
 
 function logout(){
     document.cookie = '';
@@ -249,7 +243,10 @@ function display_my_incomplete_surveys(input){
 
         let desc = input[i].description + ""
         desc = desc.replace('\'', '')
-        display+= "<span>Title: " +title + " Description: " + desc + "<button onclick=\"myResponses(" + input[i].surveyID + ", '" + title + "', '" +desc+"')\">My Responses</button></span><br>"
+        let title_box = "<div style=\"width: 200px; display: inline;\">Title: " +title+"</div>"
+        let desc_box = "<div style=\"width: 200px; display: inline;\">Description: " +desc+"</div>"
+        let myButton = "<div style=\"width: 200px; display: inline;\"><button onclick=\"myResponses(" + input[i].surveyID + ", '" + title + "', '" +desc+"')\">My Responses</button></div><br>"
+        display+= (title_box+desc_box+myButton+"")
     }
     document.getElementById("incompletesurveysDisplayBox").innerHTML = display;
 
@@ -264,7 +261,7 @@ function myResponses(surveyID, titel, desc){
     let payLoad = {
         email: temp
     }
-    let theUrl = "/php/getMyQuestions.php"
+    let theUrl = "/php/getIncompleteQuestions.php"
     let xhr = new XMLHttpRequest();
 
     xhr.open( "POST", theUrl, true ); // false for synchronous request
@@ -272,7 +269,7 @@ function myResponses(surveyID, titel, desc){
     try {
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                display_my_incomplete_surveys(JSON.parse(xhr.responseText))
+                display_my_incomplete_Responses(JSON.parse(xhr.responseText))
             }else{
                 console.log("server error")
             }
@@ -281,5 +278,9 @@ function myResponses(surveyID, titel, desc){
     } catch (err) {
         console.log("server error")
     }
+}
+
+function display_my_incomplete_Responses(){
+
 }
 
