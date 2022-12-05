@@ -55,3 +55,10 @@ AND EXISTS( SELECT *
                                 WHERE participantEmail = "test@gmail.com"
                                 AND surveyID = "3"
                                 GROUP BY question;
+
+
+SELECT id, question, group_concat(IFNULL(answer, 'NULL')) AS answer
+FROM questions
+WHERE participantEmail = "test@gmail.com"
+AND surveyID = "5"
+GROUP BY question, id;
