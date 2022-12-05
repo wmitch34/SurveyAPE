@@ -232,9 +232,8 @@ function showMyIncompleteSurveys(){
 
 }
 
-function display_my_incomplete_surveys(input){
-    
-    
+// This displays the incomplete surveys By survey title
+function display_my_incomplete_surveys(input){  
     let display = "";
     for(let i = 0; i < input.length;i++){
 
@@ -244,7 +243,7 @@ function display_my_incomplete_surveys(input){
         let desc = input[i].description + ""
         desc = desc.replace('\'', '')
         let title_box = "<div style=\"width: 200px; display: inline;\">Title: " +title+"</div>"
-        let desc_box = "<div style=\"width: 200px; display: inline;\">Description: " +desc+"</div>"
+        let desc_box = "<div style=\"width: 200px; display: inline;\">  Description: " +desc+"  </div>"
         let myButton = "<div style=\"width: 200px; display: inline;\"><button onclick=\"myResponses(" + input[i].surveyID + ", '" + title + "', '" +desc+"')\">My Responses</button></div><br>"
         display+= (title_box+desc_box+myButton+"")
     }
@@ -252,24 +251,26 @@ function display_my_incomplete_surveys(input){
 
 }
 
+// this gets and The questions for the survey with "surveyID" in the arguments
 function myResponses(surveyID, titel, desc){
-    console.log("SurveyID: "+surveyID +"Title: "+ titel + " Desc"+desc)
-
     let temp = document.cookie.toString();
     temp = temp.slice(1, -1);
 
     let payLoad = {
-        email: temp
+        email: temp,
+        surveyID:surveyID
     }
     let theUrl = "/php/getIncompleteQuestions.php"
     let xhr = new XMLHttpRequest();
 
+    console.log("sending responses")
     xhr.open( "POST", theUrl, true ); // false for synchronous request
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
     try {
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                display_my_incomplete_Responses(JSON.parse(xhr.responseText))
+                console.log("here")
+                display_my_incomplete_Responses(JSON.parse(xhr.responseText), surveyID, titel, desc)
             }else{
                 console.log("server error")
             }
@@ -280,7 +281,145 @@ function myResponses(surveyID, titel, desc){
     }
 }
 
-function display_my_incomplete_Responses(){
+// this displays the responses
+function display_my_incomplete_Responses(input, surveyID, title, desc){
+    console.log("Input is: " + input)
+    let display = "<h1>"+title+"<h1><h2>"+desc+"</h2><br>"
+    let temp_disp = "<div><p><p></div>"
+    let respArr = []
+    let flag_arr = [];
+
+    for(let i = 0; i < input.length;i++){
+        let q_ID = input.id
+        let question = input[i].question+""
+        let answer = input[i].answer+""
+        let answer_box = "";
+        let radioflag = false;
+        
+
+        if(question == ""){
+            continue;
+        }
+        // mult choice
+        if(input[i].type == 0){
+            radioflag = true
+            answer_box = "<label><input id = \"check_box"+q_ID +"\" type = \"radio\" name=\"name"+q_ID+"\" value=\"1\"> 1</label><label><input id = \"check_box"+q_ID +"\" type=\"radio\" name=\"name"+q_ID+"\" value=\"2\"> 2</label></label><label><input id = \"check_box"+q_ID +"\" type=\"radio\" name=\"name"+q_ID+"\" value=\"3\"> 3</label></label><label><input id = \"check_box"+q_ID +"\" type=\"radio\" name=\"name"+q_ID+"\" value=\"4\"> 4</label></label><label><input id = \"check_box"+q_ID +"\" type=\"radio\" name=\"name"+q_ID+"\" value=\"5\"> 5</label>"
+        }else if(input[i].type == 1){
+            if(answer == "NULL"){
+                answer_box = "<input type=\"text\"></input>"
+            }else{
+                answer_box = "<input type=\"text\" value = \""+ answer+"\"></input>"
+            }
+        }
+
+        if(radioflag){
+            flag_arr.pushq_ID
+        }
+
+
+        display+= "<span><p>Question: " +question + " <p></p><label>Your Response: </label>"+ answer_box +""
+        radioflag = false;
+        
+
+    }
+
+    display += "<br><button onclick = \"sendResponses("+input.length+", "+ respArr+")\">Save and Submit</button><button onclick = \"cancelSend()\">cancel</button>"
+
+    document.getElementById("incompletesurveysDisplayBox").innerHTML = display;
+
+    for(let i = 0; i < flag_arr.length; i++){
+        let here = flag_arr[i]
+        document.getElementById("check_box"+here).checked = true;
+    }
+}
+
+// send answers if they are filled out
+function sendResponses(numQuestions, respArr){
+    let payLoad = []
+    
+    for(let i = 0; i < numQuestions; i++){
+        answer
+        answer = document.getElementById("").value+"";
+        if(answer == ""){
+            console.log("Submitting with incomplete data")
+            continue
+        }
+        let temp_obj = {
+            id:respArr[i].id,
+            answer:answer
+        }
+
+        payLoad.push(temp_obj)
+    }
+
+    payload = JSON.stringify(payLoad)
+
+    console.log(payLoad)
+    let theUrl = "/php/submitResponses.php"
+    let xhr = new XMLHttpRequest();
+
+    xhr.open( "POST", theUrl, true ); // false for synchronous request
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log("Successs")
+            }else{
+                console.log("server error")
+            }
+        };
+        xhr.send(JSON.stringify(payLoad))
+    } catch (err) {
+        console.log("server error")
+    }
+    // 
+    showMyIncompleteSurveys()
+}
+
+function cancelSend(){
+    showMyIncompleteSurveys()
 
 }
 
+function showCompleteSurveys(){
+    let temp = document.cookie.toString();
+    temp = temp.slice(1, -1);
+
+    let payLoad = {
+        email: temp
+    }
+    let theUrl = "/php/getCompleteSurveys.php"
+    let xhr = new XMLHttpRequest();
+
+    xhr.open( "POST", theUrl, true ); // false for synchronous request
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                display_my_complete_surveys(JSON.parse(xhr.responseText))
+            }else{
+                console.log("server error")
+            }
+        };
+        xhr.send(JSON.stringify(payLoad))
+    } catch (err) {
+        console.log("server error")
+    }
+
+}
+
+function display_my_complete_surveys(input){
+    let display = "";
+    for(let i = 0; i < input.length;i++){
+
+        let title = input[i].title + ""
+        title = title.replace('\'', '')
+
+        let desc = input[i].description + ""
+        desc = desc.replace('\'', '')
+        let title_box = "<div style=\"width: 200px; display: inline;\">Title: " +title+"</div>"
+        let desc_box = "<div style=\"width: 200px; display: inline;\">  Description: " +desc+"</div>"
+        display+= (title_box+desc_box)
+    }
+    document.getElementById("completeSurveysDisplayBox").innerHTML = display;
+}

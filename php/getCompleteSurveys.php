@@ -1,4 +1,3 @@
-<!-- return array of surveys that I have filled out and submitted -->
 <?php	//return array of surveys that curr user has created
 	$inData = json_decode(file_get_contents('php://input'), true);
 	$email = $inData["email"];	//email of person logged in
