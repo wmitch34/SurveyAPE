@@ -269,7 +269,6 @@ function myResponses(surveyID, titel, desc){
     try {
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                console.log("here")
                 display_my_incomplete_Responses(JSON.parse(xhr.responseText), surveyID, titel, desc)
             }else{
                 console.log("server error")
@@ -285,8 +284,6 @@ function myResponses(surveyID, titel, desc){
 function display_my_incomplete_Responses(input, surveyID, title, desc){
     console.log("Input is: " + input)
     let display = "<h1>"+title+"<h1><h2>"+desc+"</h2><br>"
-    let temp_disp = "<div><p><p></div>"
-    let respArr = []
     let flag_arr = [];
 
     for(let i = 0; i < input.length;i++){
@@ -294,36 +291,33 @@ function display_my_incomplete_Responses(input, surveyID, title, desc){
         let question = input[i].question+""
         let answer = input[i].answer+""
         let answer_box = "";
-        let radioflag = false;
-        
+        let answered = false;
 
         if(question == ""){
             continue;
         }
         // mult choice
         if(input[i].type == 0){
-            radioflag = true
-            answer_box = "<label><input id = \"check_box"+q_ID +"\" type = \"radio\" name=\"name"+q_ID+"\" value=\"1\"> 1</label><label><input id = \"check_box"+q_ID +"\" type=\"radio\" name=\"name"+q_ID+"\" value=\"2\"> 2</label></label><label><input id = \"check_box"+q_ID +"\" type=\"radio\" name=\"name"+q_ID+"\" value=\"3\"> 3</label></label><label><input id = \"check_box"+q_ID +"\" type=\"radio\" name=\"name"+q_ID+"\" value=\"4\"> 4</label></label><label><input id = \"check_box"+q_ID +"\" type=\"radio\" name=\"name"+q_ID+"\" value=\"5\"> 5</label>"
+            if(answer >= 1 && answer <= 5){
+                answered = true;
+            }
+            answer_box = "<label><input id = \"check_box"+q_ID +"1\" type = \"radio\" name=\"name"+q_ID+"\" value=\"1\"> 1</label><label><input id = \"check_box"+q_ID +"2\" type=\"radio\" name=\"name"+q_ID+"\" value=\"2\"> 2</label></label><label><input id = \"check_box"+q_ID +"3\" type=\"radio\" name=\"name"+q_ID+"\" value=\"3\"> 3</label></label><label><input id = \"check_box"+q_ID +"4\" type=\"radio\" name=\"name"+q_ID+"\" value=\"4\"> 4</label></label><label><input id = \"check_box"+q_ID +"5\" type=\"radio\" name=\"name"+q_ID+"\" value=\"5\"> 5</label>"
         }else if(input[i].type == 1){
             if(answer == "NULL"){
                 answer_box = "<input type=\"text\"></input>"
             }else{
-                answer_box = "<input type=\"text\" value = \""+ answer+"\"></input>"
+                answer_box = "<input id = \"text_"+q_ID+"\"type=\"text\" value = \""+ answer+"\"></input>"
             }
         }
-
-        if(radioflag){
-            flag_arr.pushq_ID
+        if(answered && answer >= 1 && answer <= 5){
+            document.getElementById("check_box"+q_ID +answer).checked = true;
         }
 
-
         display+= "<span><p>Question: " +question + " <p></p><label>Your Response: </label>"+ answer_box +""
-        radioflag = false;
-        
-
+    
     }
 
-    display += "<br><button onclick = \"sendResponses("+input.length+", "+ respArr+")\">Save and Submit</button><button onclick = \"cancelSend()\">cancel</button>"
+    display += "<br><button onclick = \"sendResponses("+input+")\">Save and Submit</button><button onclick = \"cancelSend()\">cancel</button>"
 
     document.getElementById("incompletesurveysDisplayBox").innerHTML = display;
 
@@ -334,12 +328,20 @@ function display_my_incomplete_Responses(input, surveyID, title, desc){
 }
 
 // send answers if they are filled out
-function sendResponses(numQuestions, respArr){
+function sendResponses(input){
     let payLoad = []
+    let answer = "";
     
     for(let i = 0; i < numQuestions; i++){
-        answer
-        answer = document.getElementById("").value+"";
+        let id = input[i].id
+        if(input[i].type == 0){
+            for(let j = 01; j <= 5; j++){
+                if(document.getElementById("check_box"+id+j).checked){
+                    answer = j
+                }
+            }
+        }
+
         if(answer == ""){
             console.log("Submitting with incomplete data")
             continue
@@ -351,7 +353,7 @@ function sendResponses(numQuestions, respArr){
 
         payLoad.push(temp_obj)
     }
-
+    console.log(payload);
     payload = JSON.stringify(payLoad)
 
     console.log(payLoad)

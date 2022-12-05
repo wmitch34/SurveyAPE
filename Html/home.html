@@ -10,9 +10,11 @@
 
     <link rel="shortcut icon" href="#">
 </head>
-<body>
+<body style="background-color: #C4D6B0;">
 
-    <span><h1 style="display: inline;">Home</h1>
+<div id = "page_container">
+
+    <span ><h1 style="display: inline;">Home</h1>
         <Button id="createSurvey" onclick ="showCreateForm()" style="display: inline;">CreateSurvey</Button>
         <Button id="logout" onclick ="logout()" style="display: inline;">Logout</Button>
     </span>
@@ -22,7 +24,7 @@
         <button>Print</button><button onclick="closePopUp()">Close</button>
 
     </div>
-</div>
+
 
     <div id="page">
     
@@ -49,16 +51,16 @@
 
     </div>
     <div id = "createdSurveys">
-        <h2>My Surveys:</h2>
+        <h1>My Surveys:</h1>
         <div id = "my_survey_display_box"></div>
     </div>
     <div id = "invitedSurveys">
-        <H2>My Survey Invitations:</H2>
-        <div id ="incompleteSurveys">
+        <H1 >My Survey Invitations:</H1>
+        <div  id ="incompleteSurveys">
             <h3>Incomplete surveys</h2>
             <div id = "incompletesurveysDisplayBox" style="width: 100%;"></div>
         </div>
-        <div id = "completeSurveys">
+        <div  id = "completeSurveys">
             <h3>Complete surveys</h2>
             <div id = "completeSurveysDisplayBox"></div>
         </div>
@@ -69,7 +71,7 @@
     <script href = "home.js">showMySurveys()</script>
     <script href = "home.js">showMyIncompleteSurveys()</script>
     <script href = "home.js">showCompleteSurveys()</script>
-
+</div>
 </body>
 </html>
 

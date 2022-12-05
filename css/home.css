@@ -1,4 +1,8 @@
 /* css for hone page */
+body{
+    font-size: large;
+    font-weight: 600;
+}
 #createSurveyForm{
     display: none;
    
@@ -11,3 +15,62 @@
 #pop_up{
     display: none;
 }
+
+h1{
+    font-size: 3rem;
+    color: #A3333D;
+    text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+}
+
+h3{
+    font-size: 2rem;
+    color: #291F1E;
+    text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+
+}
+
+#my_survey_display_box{
+    border-radius: 25px;
+  border: 2px solid black;
+  padding: 20px;
+  max-width: fit-content;
+}
+
+#incompletesurveysDisplayBox{
+    border-radius: 25px;
+  border: 2px solid black;
+  padding: 20px;
+  max-width: 80%;
+}
+
+#completeSurveysDisplayBox{
+    border-radius: 25px;
+  border: 2px solid black;
+  padding: 20px;
+  max-width: 80%;
+}
+
+#page_container{
+    margin-top: 3%;
+   width: 80%;
+   margin-left: 10%;
+}
+#title{
+    width: 30%;
+}
+#desc{
+    width: 30%;
+}
+
+button{
+    background-color: #6AB1DD;
+    min-height: 30px;
+    border-color: #6AB1DD ;
+    border-radius: 10px;
+    min-width: 70px;
+    
+}
+button:hover {
+    background-color: #F64740; /* Green */
+    color: white;
+  }
