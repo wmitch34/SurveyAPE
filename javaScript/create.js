@@ -1,9 +1,17 @@
 function create(){
+    document.getElementById("create_error").style = "display: none;"
+
     let title = document.getElementById("create_title").value 
     let desc = document.getElementById("create_desc").value
+    
+    if(title == "" || desc ==""){
+        document.getElementById("create_error").innerHTML = "Please fill all fields."
+        document.getElementById("create_error").style = "display: block;"
+        return
+
+    }
     let temp = document.cookie.toString();
     temp = temp.slice(1, -1);
-    console.log(temp)
 
     let survey_obj = {
         title: title,
@@ -42,7 +50,12 @@ function create(){
         }
         emailArr.push(email_obj);
     }
+    if(stringArr.length < 1 || emailArr.length < 1){
+        document.getElementById("create_error").innerHTML = "Please fill all fields."
+        document.getElementById("create_error").style = "display: block;"
+        return
 
+    }
     let payLoad = {
         "title":survey_obj.title,
         "desc":survey_obj.desc,
@@ -66,7 +79,6 @@ function create(){
             xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     let res = xhr.responseText
-                    console.log("Res return from server: " + res)
                 }else{
                     console.log("server error")
                 }

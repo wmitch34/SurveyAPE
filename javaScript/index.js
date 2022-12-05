@@ -2,7 +2,7 @@
 
 // url
 var baseURL = "198.211.100.16"
-// userID for cookie
+// cookie
 document.cookie = "";
 var ret;
 

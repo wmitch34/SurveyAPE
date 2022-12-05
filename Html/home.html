@@ -11,49 +11,64 @@
     <link rel="shortcut icon" href="#">
 </head>
 <body>
+
     <span><h1 style="display: inline;">Home</h1>
         <Button id="createSurvey" onclick ="showCreateForm()" style="display: inline;">CreateSurvey</Button>
         <Button id="logout" onclick ="logout()" style="display: inline;">Logout</Button>
     </span>
+
+    <div id="pop_up" style="display: none;">
+        <div id="showResponsesBox">You shouldnt be here</div>
+        <button>Print</button><button onclick="closePopUp()">Close</button>
+
+    </div>
+</div>
+
+    <div id="page">
+    
     <div id ="createSurveyForm">
         <label>Title</label>
         <input class= "formField" type="text" id = "create_title">
         <br>
         <label>Description</label>
         <input class= "formField" type="text" id = "create_desc">
+        
         <br>
         <button id="add_question" onclick="add_question()">Add Question</button>
         <br>
-        <div id="question_box"></div>
         <div id = "addq"></div>
+        <div id="question_box"></div>
+        
         <div id="email_display_box">
             <!-- <div id = "user_box_message"></div> -->
         </div>
+        <div><p id ="create_error" style="display: none;"></p></div>
         <button id="create" onclick="create()">Submit </button>
         <button id="cancel_add_survey" onclick="cancel_add_survey()">Cancel</button>
      
 
     </div>
     <div id = "createdSurveys">
-        <h2>Created Surveys:</h2>
+        <h2>My Surveys:</h2>
         <div id = "my_survey_display_box"></div>
     </div>
     <div id = "invitedSurveys">
-        <H2>You have been invited to complete the following surveys:</H2>
+        <H2>My Survey Invitations:</H2>
         <div id ="incompleteSurveys">
             <h3>Incomplete surveys</h2>
-            <div id = " incompletesurveysDisplayBox"></div>
+            <div id = "incompletesurveysDisplayBox"></div>
         </div>
         <div id = "completeSurveys">
             <h3>Complete surveys</h2>
             <div id = "completeSurveysDisplayBox"></div>
         </div>
     </div>
+    </div>
+    
 
     <script href = "home.js">showMySurveys()</script>
-    <!-- <script href = "home.js">showIncompleteSurveys()</script> -->
-    <!-- <script href = "home.js">showCompleteSurveys()</script> -->
-    <script>console.log("Cookie: " +document.cookie)</script>
+    <script href = "home.js">showMyIncompleteSurveys()</script>
 
 </body>
 </html>
+
