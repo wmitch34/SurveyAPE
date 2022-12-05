@@ -1,19 +1,18 @@
 <?php	//return array of surveys that curr user has created
 	$inData = json_decode(file_get_contents('php://input'), true);
-	$email = $inData["email"];	//email of person logged in
+	$surveyID = $inData["surveyID"];	//surveyID of person logged in
+    $pEmail = $inData["email"];
 	$conn = new mysqli("localhost", "will", "dbscrub", "Group18");
 	if($conn->connect_error){
 		returnWithError($conn->connect_error);
 	}
 	else{
-		//$stmt = $conn->prepare("SELECT `title`, `description`, `type`  FROM surveys, questions WHERE surveys.email = ? AND surveys.surveyID = questions.surveyID");
-		$stmt = $conn->prepare("SELECT DISTINCT s.title, s.description, s.surveyID
-								FROM questions q
-								INNER JOIN surveys s 
-								ON s.surveyID = q.surveyID
-								WHERE q.answer IS NULL
-								AND q.participantEmail = ?");
-		$stmt->bind_param("s", $email);
+		$stmt = $conn->prepare("SELECT question, group_concat(IFNULL(answer, 'NULL')) AS answer
+                                FROM questions
+                                WHERE participantEmail = ?
+                                AND surveyID = ? 
+                                GROUP BY question");
+		$stmt->bind_param("si", $pEmail, $surveyID);
 		$stmt->execute();
 		$result = $stmt->get_result();
         $rows = array();
