@@ -7,11 +7,11 @@
 		returnWithError($conn->connect_error);
 	}
 	else{
-		$stmt = $conn->prepare("SELECT question, group_concat(IFNULL(answer, 'NULL')) AS answer
+		$stmt = $conn->prepare("SELECT `id`, `type`, `question`, group_concat(IFNULL(answer, 'NULL')) AS answer
                                 FROM questions
                                 WHERE participantEmail = ?
                                 AND surveyID = ? 
-                                GROUP BY question");
+                                GROUP BY `question`, `id`, `type`");
 		$stmt->bind_param("si", $pEmail, $surveyID);
 		$stmt->execute();
 		$result = $stmt->get_result();
