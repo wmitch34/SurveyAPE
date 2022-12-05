@@ -26,7 +26,12 @@ function showMySurveys(){
     }
 }
 
-function display_my_surveys(input){    
+function printResponsesToText(input){
+
+}
+
+function display_my_surveys(input){
+    //printResponsesToText(input);    
     let display = "";
     for(let i = 0; i < input.length;i++){
 
@@ -39,6 +44,8 @@ function display_my_surveys(input){
         display+= "<span>Title: " +title + " Description: " + desc + "<button onclick=\"showResponses(" + input[i].surveyID + ", '" + title + "', '" +desc+"')\">Show Responses</button></span><br>"
     }
     document.getElementById("my_survey_display_box").innerHTML = display;
+    display_my_surveys(display)
+
 
 }
 
@@ -281,27 +288,31 @@ function myResponses(surveyID, titel, desc){
 }
 
 // this displays the responses
+var input_global;
+var contents_global = [];
 function display_my_incomplete_Responses(input, surveyID, title, desc){
-    console.log("Input is: " + input)
+    input_global = input
     let display = "<h1>"+title+"<h1><h2>"+desc+"</h2><br>"
     let flag_arr = [];
 
     for(let i = 0; i < input.length;i++){
-        let q_ID = input.id
+        // clean input
+        let q_ID = input[i].id
         let question = input[i].question+""
         let answer = input[i].answer+""
-        let answer_box = "";
-        let answered = false;
 
+        // declare output
+        let answer_box = "";    
+
+        // error check
         if(question == ""){
+            console.log("This Survey has an empty question")
             continue;
         }
         // mult choice
         if(input[i].type == 0){
-            if(answer >= 1 && answer <= 5){
-                answered = true;
-            }
-            answer_box = "<label><input id = \"check_box"+q_ID +"1\" type = \"radio\" name=\"name"+q_ID+"\" value=\"1\"> 1</label><label><input id = \"check_box"+q_ID +"2\" type=\"radio\" name=\"name"+q_ID+"\" value=\"2\"> 2</label></label><label><input id = \"check_box"+q_ID +"3\" type=\"radio\" name=\"name"+q_ID+"\" value=\"3\"> 3</label></label><label><input id = \"check_box"+q_ID +"4\" type=\"radio\" name=\"name"+q_ID+"\" value=\"4\"> 4</label></label><label><input id = \"check_box"+q_ID +"5\" type=\"radio\" name=\"name"+q_ID+"\" value=\"5\"> 5</label>"
+            answer_box = "<label><input id=\"check_box"+q_ID +"1\" type = \"radio\" name=\"name"+q_ID+"\" value=\"1\"> 1</label><label><input id = \"check_box"+q_ID +"2\" type=\"radio\" name=\"name"+q_ID+"\" value=\"2\"> 2</label></label><label><input id = \"check_box"+q_ID +"3\" type=\"radio\" name=\"name"+q_ID+"\" value=\"3\"> 3</label></label><label><input id = \"check_box"+q_ID +"4\" type=\"radio\" name=\"name"+q_ID+"\" value=\"4\"> 4</label></label><label><input id = \"check_box"+q_ID +"5\" type=\"radio\" name=\"name"+q_ID+"\" value=\"5\"> 5</label>"
+        // Fill in the Blank
         }else if(input[i].type == 1){
             if(answer == "NULL"){
                 answer_box = "<input type=\"text\"></input>"
@@ -309,35 +320,28 @@ function display_my_incomplete_Responses(input, surveyID, title, desc){
                 answer_box = "<input id = \"text_"+q_ID+"\"type=\"text\" value = \""+ answer+"\"></input>"
             }
         }
-        if(answered && answer >= 1 && answer <= 5){
-            document.getElementById("check_box"+q_ID +answer).checked = true;
-        }
-
         display+= "<span><p>Question: " +question + " <p></p><label>Your Response: </label>"+ answer_box +""
-    
     }
-
-    display += "<br><button onclick = \"sendResponses("+input+")\">Save and Submit</button><button onclick = \"cancelSend()\">cancel</button>"
-
+    display += "<br><br><button onclick = \"sendResponses()\">Save and Submit</button><button onclick = \"cancelSend()\">cancel</button>"
     document.getElementById("incompletesurveysDisplayBox").innerHTML = display;
-
-    for(let i = 0; i < flag_arr.length; i++){
-        let here = flag_arr[i]
-        document.getElementById("check_box"+here).checked = true;
-    }
 }
 
 // send answers if they are filled out
-function sendResponses(input){
+function sendResponses(){
+    let input = input_global
     let payLoad = []
     let answer = "";
     
-    for(let i = 0; i < numQuestions; i++){
+    // set responses
+    for(let i = 0; i < input.length; i++){
+        
         let id = input[i].id
         if(input[i].type == 0){
-            for(let j = 01; j <= 5; j++){
-                if(document.getElementById("check_box"+id+j).checked){
+            for(let j = 1; j <= 5; j++){
+                let code = id + "" +j
+                if(document.getElementById("check_box"+code).checked){
                     answer = j
+                    input[i].answer = answer
                 }
             }
         }
@@ -347,17 +351,17 @@ function sendResponses(input){
             continue
         }
         let temp_obj = {
-            id:respArr[i].id,
+            id:input[i].id,
             answer:answer
         }
+        console.log("sending id: "+temp_obj.id+" Sending answer:" + temp_obj.answer)
 
         payLoad.push(temp_obj)
     }
-    console.log(payload);
+   
     payload = JSON.stringify(payLoad)
 
-    console.log(payLoad)
-    let theUrl = "/php/submitResponses.php"
+    let theUrl = "/php/submitResponse.php"
     let xhr = new XMLHttpRequest();
 
     xhr.open( "POST", theUrl, true ); // false for synchronous request
