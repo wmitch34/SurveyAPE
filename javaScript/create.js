@@ -3,8 +3,10 @@ function create(){
 
     let title = document.getElementById("create_title").value 
     let desc = document.getElementById("create_desc").value
+    let startDate = document.getElementById("create_start_date").value
+    let endDate = document.getElementById("create_end_date").value
     
-    if(title == "" || desc ==""){
+    if(title == "" || desc =="" || startDate == "" || endDate == ""){
         document.getElementById("create_error").innerHTML = "Please fill all fields."
         document.getElementById("create_error").style = "display: block;"
         return
@@ -16,7 +18,9 @@ function create(){
     let survey_obj = {
         title: title,
         desc: desc,
-        ownerEmail: temp
+        ownerEmail: temp,
+        startDate: startDate,
+        endDate: endDate
     }
 
     // send survey table obj
@@ -54,12 +58,13 @@ function create(){
         document.getElementById("create_error").innerHTML = "Please fill all fields."
         document.getElementById("create_error").style = "display: block;"
         return
-
     }
     let payLoad = {
         "title":survey_obj.title,
         "desc":survey_obj.desc,
         "ownerEmail":survey_obj.ownerEmail,
+        "startDate": survey_obj.startDate,
+        "endDate": survey_obj.endDate,
         "questionArray":stringArr,
         "participants":emailArr
     }
