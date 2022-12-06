@@ -480,5 +480,9 @@ function printMySurveys()
         console.log(survey_print_data[i])
     }
     const blob = new Blob(survey_print_data, {type:"text/html"})
+    const href = URL.createObjectURL(blob)
+    document.getElementById("printButton").href = href
+    //URL.revokeObjectURL(href)
+
 
 }
