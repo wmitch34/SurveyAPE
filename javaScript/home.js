@@ -156,14 +156,14 @@ function display_questions(res,title, desc){
     let display = "<h2>Title: '"+ title +"'<br> Desc: '" + desc + "'</h2>"
     JSON.stringify(res)
 
+    
     for(let i = 0 ; i < res.length; i++){
-        let temp_temp = [];
         // this is a question
         let temp = {
             question:res[i].question,
             answers: res[i].answer,
             average: res[i].average,
-            varience: res[i].varience,
+            varience: res[i].variance,
         }
 
         // this is the function that will need to change when the data coming in changes
@@ -288,7 +288,6 @@ function myResponses(surveyID, titel, desc){
     let theUrl = "/php/getIncompleteQuestions.php"
     let xhr = new XMLHttpRequest();
 
-    console.log("sending responses")
     xhr.open( "POST", theUrl, true ); // false for synchronous request
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
     try {
@@ -318,8 +317,7 @@ function display_my_incomplete_Responses(input, surveyID, title, desc){
         let q_ID = input[i].id
         let question = input[i].question+""
         let answer = input[i].answer+""
-        let flag = []
-
+       
         // declare output
         let answer_box = "";    
 
@@ -335,7 +333,8 @@ function display_my_incomplete_Responses(input, surveyID, title, desc){
                     selection:parseInt(answer) 
                 }
                 flag.push(temp) 
-                
+                console.log(flag.length)
+                console.log(temp)
             }else{
                 let temp = {
                     q_ID:q_ID,
@@ -359,13 +358,12 @@ function display_my_incomplete_Responses(input, surveyID, title, desc){
 
     display += "<br><br><button onclick = \"sendResponses()\">Save and Submit</button><button onclick = \"cancelSend()\">cancel</button>"
     document.getElementById("incompletesurveysDisplayBox").innerHTML = display;
+
     for(let i = 0; i < flag.length; i++){
         if(flag[i].selection == -1){
-            console.log( "Selection is" + flag[i].selection)
             continue;
         }else{
-            document.getElementById("check_box"+flag[i].id+""+flag[i].selection).checked = true;
-            console.log( "Selection is" + flag[i].selection)
+            document.getElementById("check_box"+flag[i].q_ID+""+flag[i].selection).checked = true;
         }
     }
 }
@@ -400,14 +398,11 @@ function sendResponses(){
             id:input[i].id,
             answer:answer
         }
-        console.log("sending id: "+temp_obj.id+" Sending answer:" + temp_obj.answer)
-
         payLoad.push(temp_obj)
     }
 
    
     payload = JSON.stringify(payLoad)
-    console.log(payload)
 
     let theUrl = "/php/submitResponse.php"
     let xhr = new XMLHttpRequest();
@@ -476,4 +471,18 @@ function display_my_complete_surveys(input){
         display+= (title_box+desc_box)
     }
     document.getElementById("completeSurveysDisplayBox").innerHTML = display;
+
+}
+function printMySurveys()
+{
+    console.log("here")
+    for(let i = 0; i < survey_print_data.length; i++){
+        console.log(survey_print_data[i])
+    }
+    
+    // const fs = require('fs')
+    // const data = input_global
+    // fs.writeFile('response.txt', data, (err) => {
+    //     if (err) throw err;
+    // })
 }
