@@ -6,7 +6,12 @@
 		returnWithError($conn->connect_error);
 	}
 	else{
-		$stmt = $conn->prepare("SELECT `question`, group_concat(`answer`) AS answer FROM questions WHERE surveyID = ? GROUP BY question");
+		#$stmt = $conn->prepare("SELECT `question`, `type` group_concat(`answer`) AS answer FROM questions WHERE surveyID = ? GROUP BY question, type");
+		$stmt = $conn->prepare("SELECT question, type, group_concat(answer) AS answer, AVG(answer) AS average, VARIANCE(answer) AS variance
+								FROM questions 
+								WHERE surveyID = ? 
+								GROUP BY question, type");
+
 		$stmt->bind_param("i", $surveyID);
 		$stmt->execute();
 		$result = $stmt->get_result();
@@ -14,7 +19,6 @@
 		while($row = mysqli_fetch_assoc($result)){
             $rows[] = $row;
         }
-
         echo json_encode($rows);
 		$stmt->close();
 		$conn->close();
