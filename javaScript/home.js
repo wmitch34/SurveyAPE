@@ -30,8 +30,7 @@ function printResponsesToText(input){
 
 }
 
-function display_my_surveys(input){
-    //printResponsesToText(input);    
+function display_my_surveys(input){   
     let display = "";
     for(let i = 0; i < input.length;i++){
 
@@ -44,7 +43,7 @@ function display_my_surveys(input){
         display+= "<span>Title: " +title + " Description: " + desc + "<button onclick=\"showResponses(" + input[i].surveyID + ", '" + title + "', '" +desc+"')\">Show Responses</button></span><br>"
     }
     document.getElementById("my_survey_display_box").innerHTML = display;
-    display_my_surveys(display)
+    
 
 
 }
@@ -129,7 +128,7 @@ function showResponses(id, title, desc){
     document.getElementById("pop_up").style = "display: block;"
 
     let payLoad = {
-        surveyID: id+""
+        surveyID: id
     }
     let theUrl = "/php/getQuestions.php"
     let xhr = new XMLHttpRequest();
@@ -152,27 +151,46 @@ function showResponses(id, title, desc){
     }
 }
 
+var survey_print_data = [];
 function display_questions(res,title, desc){
-    let display = "<h2>Title: '"+ title +"' Desc: '" + desc + "'</h2>"
+    let display = "<h2>Title: '"+ title +"'<br> Desc: '" + desc + "'</h2>"
     JSON.stringify(res)
 
     for(let i = 0 ; i < res.length; i++){
-        if(res[i].question ==  null || res[i].question == "null" ||res[i].question == ""){
-            continue;
+        let temp_temp = [];
+        // this is a question
+        let temp = {
+            question:res[i].question,
+            answers: res[i].answer,
+            average: res[i].average,
+            varience: res[i].varience,
         }
+
+        // this is the function that will need to change when the data coming in changes
+        display += "<div class = \"box\" style = \"border-radius: 25px;border: 2px solid black;padding: 10px, 10px; max-width: 80%;\">"
         display+="<p>Question : "+ res[i].question +"</p>"
-        
         let arr = (res[i].answer+"").split(",")
-        display += "<p>Answers:</p>"
-        for(let j = 0; j < arr.length; j++){
-            
-            if(arr[i] ==  null || arr[i] == "null"){
-                continue;
-            }
-            display += "<p>"+ arr[i]+ "</p>"
         
+
+        display += "<p>Answers:</p><p>"
+        for(let j = 0; j < arr.length; j++){
+            if(res[i].type == 0 ){
+                if(j == 0){
+                    display += "" + arr[j] + "";
+                }else{
+                    // multiple choice
+                    display += ", " + arr[j] + "";
+                }
+                
+            }else if(res[i].type == 1){
+                display += "<p>"+ arr[j]+"</p>"         
+            }
         }
+       
+        display += "</p></div>"
+        survey_print_data.push(temp)
     }
+    
     document.getElementById("showResponsesBox").innerHTML= display
 
 }
@@ -293,37 +311,63 @@ var contents_global = [];
 function display_my_incomplete_Responses(input, surveyID, title, desc){
     input_global = input
     let display = "<h1>"+title+"<h1><h2>"+desc+"</h2><br>"
-    let flag_arr = [];
+    let flag = [];
 
     for(let i = 0; i < input.length;i++){
         // clean input
         let q_ID = input[i].id
         let question = input[i].question+""
         let answer = input[i].answer+""
+        let flag = []
 
         // declare output
         let answer_box = "";    
 
         // error check
         if(question == ""){
-            console.log("This Survey has an empty question")
             continue;
         }
         // mult choice
         if(input[i].type == 0){
+            if(parseInt(answer) >= 1 && parseInt(answer)<= 5){
+                let temp = {
+                    q_ID:q_ID,
+                    selection:parseInt(answer) 
+                }
+                flag.push(temp) 
+                
+            }else{
+                let temp = {
+                    q_ID:q_ID,
+                    selection:-1
+                }
+              
+                flag.push(temp) 
+                
+            }
             answer_box = "<label><input id=\"check_box"+q_ID +"1\" type = \"radio\" name=\"name"+q_ID+"\" value=\"1\"> 1</label><label><input id = \"check_box"+q_ID +"2\" type=\"radio\" name=\"name"+q_ID+"\" value=\"2\"> 2</label></label><label><input id = \"check_box"+q_ID +"3\" type=\"radio\" name=\"name"+q_ID+"\" value=\"3\"> 3</label></label><label><input id = \"check_box"+q_ID +"4\" type=\"radio\" name=\"name"+q_ID+"\" value=\"4\"> 4</label></label><label><input id = \"check_box"+q_ID +"5\" type=\"radio\" name=\"name"+q_ID+"\" value=\"5\"> 5</label>"
         // Fill in the Blank
         }else if(input[i].type == 1){
             if(answer == "NULL"){
-                answer_box = "<input type=\"text\"></input>"
+                answer_box = "<input id = \"text_"+q_ID+"\" type=\"text\"></input>"
             }else{
-                answer_box = "<input id = \"text_"+q_ID+"\"type=\"text\" value = \""+ answer+"\"></input>"
+                answer_box = "<input id = \"text_"+q_ID+"\" type=\"text\" value = \""+ answer+"\"></input>"
             }
         }
         display+= "<span><p>Question: " +question + " <p></p><label>Your Response: </label>"+ answer_box +""
     }
+
     display += "<br><br><button onclick = \"sendResponses()\">Save and Submit</button><button onclick = \"cancelSend()\">cancel</button>"
     document.getElementById("incompletesurveysDisplayBox").innerHTML = display;
+    for(let i = 0; i < flag.length; i++){
+        if(flag[i].selection == -1){
+            console.log( "Selection is" + flag[i].selection)
+            continue;
+        }else{
+            document.getElementById("check_box"+flag[i].id+""+flag[i].selection).checked = true;
+            console.log( "Selection is" + flag[i].selection)
+        }
+    }
 }
 
 // send answers if they are filled out
@@ -344,6 +388,8 @@ function sendResponses(){
                     input[i].answer = answer
                 }
             }
+        }else{
+            answer = document.getElementById("text_"+id).value
         }
 
         if(answer == ""){
@@ -358,8 +404,10 @@ function sendResponses(){
 
         payLoad.push(temp_obj)
     }
+
    
     payload = JSON.stringify(payLoad)
+    console.log(payload)
 
     let theUrl = "/php/submitResponse.php"
     let xhr = new XMLHttpRequest();
