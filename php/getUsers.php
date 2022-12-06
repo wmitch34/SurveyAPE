@@ -5,7 +5,8 @@
 		returnWithError($conn->connect_error);
 	}
 	else{
-		$result = $conn->query("SELECT `email` FROM users");
+		$result = $conn->query("SELECT `email` 
+								FROM users");
         $rows = array();
 		// $stmt->execute();
 		while($row = $result->fetch_assoc()){

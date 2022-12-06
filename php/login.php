@@ -9,7 +9,9 @@
 		returnWithError($conn->connect_error);
 	}
 	else{
-		$stmt = $conn->prepare("SELECT `email`, `password` FROM users WHERE `email` = ? AND `password` = ?");
+		$stmt = $conn->prepare("SELECT `email`, `password` 
+								FROM users 
+								WHERE `email` = ? AND `password` = ?");
 		$stmt->bind_param("ss", $inData['email'], $inData['password']);
 		$stmt->execute();
 		$result = $stmt->get_result();

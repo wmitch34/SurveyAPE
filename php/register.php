@@ -24,7 +24,7 @@
 			returnWithError( "Account Already Exists With this email.");
 		}else{
 
-			$stmt = $conn->prepare("INSERT into users (`email`, `password`) VALUES(?,?)");
+			$stmt = $conn->prepare("INSERT INTO users (`email`, `password`) VALUES(?,?)");
 			$stmt->bind_param("ss", $Email, $Password);
 			$stmt->execute();
 		
