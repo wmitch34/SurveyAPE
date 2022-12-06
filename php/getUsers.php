@@ -13,7 +13,6 @@
         }
 
         echo json_encode($rows);
-		//$stmt->close();
 		$conn->close();
 	}
 

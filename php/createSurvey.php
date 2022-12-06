@@ -5,6 +5,8 @@
 	$title = $inData["title"];						//title of survey
 	$desc = $inData["desc"]; 						//survey desc
 	$ownerEmail = $inData["ownerEmail"];			//owners email
+	$startDate = $inData["startDate"];
+	$endDate = $inData["endDate"];
 	$pEmail = "";
 	$question = "";
 	$type = PHP_INT_MAX;
@@ -16,8 +18,9 @@
 	} 
 	else
 	{
-        $stmt = $conn->prepare("INSERT into surveys (`surveyID`, `title`, `description`, `email`) VALUES(NULL,?,?,?)");
-        $stmt->bind_param("sss", $title, $desc, $ownerEmail);
+        $stmt = $conn->prepare("INSERT INTO surveys (`surveyID`, `title`, `description`, `email`, `startDate`, `endDate`) 
+								VALUES(NULL,?,?,?,?,?)");
+        $stmt->bind_param("sssss", $title, $desc, $ownerEmail, $startDate, $endDate);
 		$stmt->execute();
 		$stmt->close();
 		$surveyID = $conn->insert_id;
@@ -30,7 +33,8 @@
 				echo $question . " ";
 				$pEmail = $x["participantEmail"];
 				echo $pEmail . " ";
-				$stmt1 = $conn->prepare("INSERT into questions (`id`,`surveyID`,`participantEmail`,`question`, `answer`, `type`) VALUES(NULL,?,?,?,NULL,?)");
+				$stmt1 = $conn->prepare("	INSERT INTO questions (`id`,`surveyID`,`participantEmail`,`question`, `answer`, `type`) 
+											VALUES(NULL,?,?,?,NULL,?)");
 				$stmt1->bind_param("issi",$surveyID, $pEmail, $question, $type);
 				$stmt1->execute();
 				$stmt1->close();

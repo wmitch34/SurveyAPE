@@ -1,7 +1,4 @@
-
 <?php
-	
-	
 	$inData = getRequestInfo();
 	$Email = $inData["email"];
 	$Password = $inData["password"];

@@ -6,7 +6,6 @@
 		returnWithError($conn->connect_error);
 	}
 	else{
-		//$stmt = $conn->prepare("SELECT `title`, `description`, `type`  FROM surveys, questions WHERE surveys.email = ? AND surveys.surveyID = questions.surveyID");
 		$stmt = $conn->prepare("SELECT `title`, `description`, `surveyID`  FROM surveys WHERE surveys.email = ?");
 		$stmt->bind_param("s", $email);
 		$stmt->execute();
