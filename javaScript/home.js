@@ -475,14 +475,10 @@ function display_my_complete_surveys(input){
 }
 function printMySurveys()
 {
-    console.log("here")
+    
     for(let i = 0; i < survey_print_data.length; i++){
         console.log(survey_print_data[i])
     }
-    
-    // const fs = require('fs')
-    // const data = input_global
-    // fs.writeFile('response.txt', data, (err) => {
-    //     if (err) throw err;
-    // })
+    const blob = new Blob(survey_print_data, {type:"text/html"})
+
 }
