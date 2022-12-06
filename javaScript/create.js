@@ -3,8 +3,8 @@ function create(){
 
     let title = document.getElementById("create_title").value 
     let desc = document.getElementById("create_desc").value
-    let startDate = document.getElementById("create_start_date").value
-    let endDate = document.getElementById("create_end_date").value
+    let startDate = document.getElementById("create_start").value
+    let endDate = document.getElementById("create_end").value
     
     if(title == "" || desc =="" || startDate == "" || endDate == ""){
         document.getElementById("create_error").innerHTML = "Please fill all fields."
@@ -22,6 +22,8 @@ function create(){
         startDate: startDate,
         endDate: endDate
     }
+
+    console.log(survey_obj)
 
     // send survey table obj
 

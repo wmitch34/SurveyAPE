@@ -6,6 +6,7 @@
 		returnWithError($conn->connect_error);
 	}
 	else{
+		//$stmt = $conn->prepare("SELECT `title`, `description`, `type`  FROM surveys, questions WHERE surveys.email = ? AND surveys.surveyID = questions.surveyID");
 		$stmt = $conn->prepare("SELECT DISTINCT s.title, s.description, s.surveyID
 								FROM questions q
 								INNER JOIN surveys s 
